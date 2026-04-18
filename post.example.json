@@ -1,0 +1,10 @@
+{
+  "platform": "both",
+  "dryRun": false,
+  "xText": "Day 7/111: Studied React Server Components.\nBuilt/practiced: A small RSC demo with async data fetching.\nTakeaway: RSC and Client Components solve different problems — knowing which to reach for matters.\n#111DaysOfLearningForChange #CodeForChange",
+  "liText": "Day 7 of 111 — React Server Components.\n\nToday I dug into React Server Components and what actually separates them from classic Client Components. The mental model shift is real: RSC runs on the server, has zero JS bundle cost, and can fetch data directly. Client Components handle interactivity.\n\nWhat I built: a small demo with an async RSC that fetches from a mock API and passes props to a client-side interactive widget below it.\n\nThe biggest takeaway: the boundary between server and client is architectural, not cosmetic. Choosing the wrong one is how apps get slow.\n\nShowing up every day is the skill.\n\n#111DaysOfLearningForChange #CodeForChange #LearningInPublic",
+  "attachments": [
+    "screenshot-day7.png",
+    "code-snippet.png"
+  ]
+}

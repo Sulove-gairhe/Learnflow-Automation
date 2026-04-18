@@ -1,0 +1,8 @@
+node_modules/
+sessions/
+logs/
+.env
+post.json
+attachments/*.png
+attachments/*.jpg
+attachments/*.mp4
