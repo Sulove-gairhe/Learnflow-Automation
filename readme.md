@@ -4,12 +4,6 @@ Autonomous browser agent that posts to **X (Twitter)** and **LinkedIn** — incl
 
 ---
 
-## How it works
-
-Playwright controls a real Chromium browser. It logs in to X and LinkedIn using your credentials, opens the compose dialog, types your post, attaches files, and clicks Post. Sessions are saved as cookies so you only log in manually once.
-
----
-
 ## Requirements
 
 - Node.js 18 or higher
