@@ -80,21 +80,20 @@ export async function postToX({ text, attachments = [], dryRun = false }) {
 
   const hasSession = sessionExists(config.x.sessionFile);
   const storageState = hasSession ? loadStorageState(config.x.sessionFile) : undefined;
-
-  const browser = await chromium.launch({
+  const context = await chromium.launchPersistentContext(config.browser.profileDir, {
     headless: config.browser.headless,
     slowMo:   config.browser.slowMo,
-  });
-
-  const context = await browser.newContext({
+    channel: config.browser.executablePath ? undefined : config.browser.channel,
+    executablePath: config.browser.executablePath || undefined,
+    args: ['--disable-blink-features=AutomationControlled'],
     storageState: storageState || undefined,
     userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ' +
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ' +
       'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     viewport: { width: 1280, height: 900 },
   });
 
-  const page = await context.newPage();
+  const page = context.pages()[0] || await context.newPage();
   page.setDefaultTimeout(config.browser.timeout);
 
   try {
@@ -146,7 +145,7 @@ export async function postToX({ text, attachments = [], dryRun = false }) {
         path: path.join(config.paths.logs, `x-dry-run-${Date.now()}.png`),
       });
       log.info('Screenshot saved to logs/');
-      await browser.close();
+      await context.close();
       return { success: true, dryRun: true };
     }
 
@@ -167,7 +166,7 @@ export async function postToX({ text, attachments = [], dryRun = false }) {
     // ── 7. Save session for next run ──────────────────────────────────────────
     await saveSession(context, config.x.sessionFile);
 
-    await browser.close();
+    await context.close();
     return { success: true, platform: 'x' };
 
   } catch (err) {
@@ -175,7 +174,7 @@ export async function postToX({ text, attachments = [], dryRun = false }) {
     await page.screenshot({ path: screenshotPath }).catch(() => {});
     log.error(`X agent failed: ${err.message}`);
     log.dim(`Screenshot saved: ${screenshotPath}`);
-    await browser.close();
+    await context.close();
     throw err;
   }
 }

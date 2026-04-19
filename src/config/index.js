@@ -24,7 +24,10 @@ export const config = {
   browser: {
     headless: process.env.HEADLESS !== 'false',
     slowMo:   parseInt(process.env.SLOW_MO  || '80'),
-    timeout:  parseInt(process.env.TIMEOUT  || '30000'),
+    timeout:  parseInt(process.env.TIMEOUT  || '60000'),
+    channel:  process.env.BROWSER_CHANNEL || 'chrome',
+    executablePath: process.env.BROWSER_EXECUTABLE_PATH || '',
+    profileDir: process.env.BROWSER_PROFILE_DIR || path.join(root, 'profiles', 'default'),
   },
   paths: {
     sessions:    path.join(root, 'sessions'),

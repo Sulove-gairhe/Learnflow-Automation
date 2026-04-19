@@ -1,0 +1,24 @@
+{
+  "name": "playwright-poster",
+  "version": "1.0.0",
+  "description": "Autonomous posting agent for X and LinkedIn using Playwright",
+  "type": "module",
+  "scripts": {
+    "post": "node src/index.js",
+    "post:x": "node src/index.js --platform x",
+    "post:linkedin": "node src/index.js --platform linkedin",
+    "post:both": "node src/index.js --platform both",
+    "login:x": "node src/login.js --platform x",
+    "login:linkedin": "node src/login.js --platform linkedin",
+    "test:x": "node src/index.js --platform x --dry-run",
+    "test:linkedin": "node src/index.js --platform linkedin --dry-run"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "mime-types": "^2.1.35",
+    "ora": "^8.0.1",
+    "playwright": "^1.59.1",
+    "prompts": "^2.4.2"
+  }
+}
