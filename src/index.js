@@ -1,10 +1,36 @@
 import fs from 'fs';
+import fsPromises from 'fs/promises';
 import prompts from 'prompts';
 import { postToX } from './agents/x.js';
 import { postToLinkedIn } from './agents/linkedin.js';
 import { resolveAttachments } from './utils/files.js';
 import { log } from './utils/logger.js';
 import { config } from './config/index.js';
+
+async function dbgLog(location, message, data, hypothesisId, runId = 'verify') {
+  const payload = {
+    sessionId: '6d4f91',
+    runId,
+    hypothesisId,
+    location,
+    message,
+    data,
+    timestamp: Date.now(),
+  };
+  // #region agent log
+  await fetch('http://127.0.0.1:7396/ingest/b5ac3ef8-24bb-43e1-91fc-81dafb3d5b4b', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Debug-Session-Id': '6d4f91',
+    },
+    body: JSON.stringify(payload),
+  }).catch(() => {});
+  // #endregion
+  // #region agent log
+  await fsPromises.appendFile('debug-6d4f91.log', `${JSON.stringify(payload)}\n`).catch(() => {});
+  // #endregion
+}
 
 function getArg(flag, fallback = undefined) {
   const idx = process.argv.indexOf(flag);
@@ -89,8 +115,14 @@ async function run() {
     ? readJsonFile(argFile)
     : (argPlatform ? { platform: argPlatform, dryRun: dryRunFlag } : await getInteractivePayload());
 
-  const platform = payload.platform || argPlatform || 'both';
+  const platform = argPlatform || payload.platform || 'both';
   const dryRun = Boolean(payload.dryRun || dryRunFlag);
+  await dbgLog('src/index.js:resolved', 'Resolved runtime mode', {
+    argPlatform,
+    payloadPlatform: payload?.platform,
+    platform,
+    dryRun,
+  }, 'H9');
 
   const attachments = resolveAttachments(payload.attachments || []);
 
@@ -114,6 +146,12 @@ async function run() {
 }
 
 run().catch((e) => {
+  // #region agent log
+  dbgLog('src/index.js:catch', 'Top-level run failure', {
+    name: e?.name,
+    message: e?.message,
+  }, 'H12').catch(() => {});
+  // #endregion
   log.error(e.message);
   process.exit(1);
 });

@@ -1,1 +1,8 @@
-{ "platform": "both", "dryRun": true, "xText": "TEST — do not post #dryrun", "liText": "TEST — do not post. Dry run only.", "attachments": [] }
+{
+    "platform": "linkedin",
+    "dryRun": true,
+    "liText": "This is a dry-run article.\n\nTesting the automated LinkedIn Article editor: cover image upload, title, and body text all wired up correctly.",
+    "attachments": [
+        "test.png"
+    ]
+}

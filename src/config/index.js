@@ -20,6 +20,7 @@ export const config = {
     loginUrl: 'https://www.linkedin.com/login',
     homeUrl:  'https://www.linkedin.com/feed',
     sessionFile: path.join(root, 'sessions', 'linkedin-session.json'),
+    profileDir:  path.join(root, 'profiles', 'linkedin'),
   },
   browser: {
     headless: process.env.HEADLESS !== 'false',

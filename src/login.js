@@ -132,8 +132,15 @@ async function loginX() {
 async function loginLinkedIn() {
   log.step('Starting LinkedIn manual login session...');
 
-  const browser = await chromium.launch({ headless: false, slowMo: 100 });
-  const context = await browser.newContext({
+  const context = await chromium.launchPersistentContext(config.linkedin.profileDir, {
+    headless: false,
+    slowMo: 100,
+    channel: config.browser.executablePath ? undefined : config.browser.channel,
+    executablePath: config.browser.executablePath || undefined,
+    args: ['--disable-blink-features=AutomationControlled'],
+    userAgent:
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ' +
+      'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     viewport: { width: 1280, height: 900 },
   });
   const page = await context.newPage();
@@ -149,7 +156,7 @@ async function loginLinkedIn() {
 
   await saveSession(context, config.linkedin.sessionFile);
   log.success(`LinkedIn session saved to ${config.linkedin.sessionFile}`);
-  await browser.close();
+  await context.close();
 }
 
 if (platform === 'x') {
