@@ -1,7 +1,7 @@
 {
     "platform": "linkedin",
     "dryRun": true,
-    "liText": "This is a dry-run article.\n\nTesting the automated LinkedIn Article editor: cover image upload, title, and body text all wired up correctly.",
+    "liText": "This is a dry-run post.\n\nTesting the automated LinkedIn feed composer: text entry and media upload from the standard post modal.",
     "attachments": [
         "test.png"
     ]
